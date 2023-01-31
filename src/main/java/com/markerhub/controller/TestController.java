@@ -1,5 +1,7 @@
 package com.markerhub.controller;
 
+import com.markerhub.common.lang.Result;
+import com.markerhub.service.SysMenuService;
 import com.markerhub.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +13,16 @@ public class TestController {
     @Autowired
     SysUserService sysUserService;
 
-    @GetMapping("/test")
-    public Object test(){
-        return sysUserService.list();
+    @Autowired
+    SysMenuService sysMenuService;
+
+    @GetMapping("/test1")
+    public Result test(){
+        return Result.succ(sysUserService.list());
+    }
+
+    @GetMapping("/test2")
+    public Object test2(){
+        return sysMenuService.list();
     }
 }

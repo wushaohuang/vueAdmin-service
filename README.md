@@ -1,5 +1,4 @@
 # vueAdmin-service
-init
 
 # Database
 
