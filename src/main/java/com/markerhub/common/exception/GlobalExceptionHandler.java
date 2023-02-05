@@ -1,4 +1,4 @@
-package com.markerhub.common.lang.exception;
+package com.markerhub.common.exception;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.markerhub.common.lang.Result;
