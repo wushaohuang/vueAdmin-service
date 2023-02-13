@@ -9,8 +9,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 我的公众号：MarkerHub
- * @since 2023-01-31
+ * @since 2021-04-05
  */
 public interface SysUserService extends IService<SysUser> {
+
+    SysUser getByUsername(String username);
+
+    String getUserAuthorityInfo(Long userId);
+
+    void clearUserAuthorityInfo(String username);
+
+    void clearUserAuthorityInfoByRoleId(Long roleId);
+
+    void clearUserAuthorityInfoByMenuId(Long menuId);
+
 
 }

@@ -13,3 +13,8 @@ spring:
       password: 111111
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
+markerhub:
+  jwt:
+    header: Authorization
+    expire: 604800//7天
+    secret: sadsda5456sda56s4da564da56s4d56s
