@@ -1,5 +1,7 @@
 package com.markerhub.security;
 
+import com.markerhub.entity.SysUser;
+import com.markerhub.service.SysUserService;
 import com.markerhub.utils.JwtUtils;
 import com.mysql.cj.util.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -22,6 +24,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    UserDetailServiceImpl userDetailService;
+
+    @Autowired
+    SysUserService sysUserService;
+
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -43,9 +51,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             throw new JwtException("token已过期");
         }
         String username = claims.getSubject();
+        SysUser sysUser = sysUserService.getByUsername(username);
         //获取用户的权限信息
         //用户名，密码，权限信息；因为要实现自动登录所以设为null，因为目前还没有权限信息所以设为null
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, null);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, userDetailService.getUserAuthority(sysUser.getId()));
 
         //设置认证主体
         SecurityContextHolder.getContext().setAuthentication(token);

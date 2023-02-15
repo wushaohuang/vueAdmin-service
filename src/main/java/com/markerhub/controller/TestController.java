@@ -4,6 +4,7 @@ import com.markerhub.common.lang.Result;
 import com.markerhub.service.SysMenuService;
 import com.markerhub.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +26,14 @@ public class TestController {
         return Result.succ(sysUserService.list());
     }
 
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/test2")
     public Object test2(){
         return sysMenuService.list();
     }
 
+    //普通用户、超级管理员
+    @PreAuthorize("hasAuthority('sys:user:list')")
     @GetMapping("/test/pass")
     public Result pass(){
 

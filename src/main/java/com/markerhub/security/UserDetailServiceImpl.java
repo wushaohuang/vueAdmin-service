@@ -5,6 +5,7 @@ import com.markerhub.entity.SysUser;
 import com.markerhub.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,15 +29,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
 
 
-        return new AccountUser(sysUser.getId(),sysUser.getUsername(),sysUser.getPassword(),getUserAuthority(sysUser.getId()));
+        return new AccountUser(sysUser.getId(), sysUser.getUsername(), sysUser.getPassword(), getUserAuthority(sysUser.getId()));
     }
 
     /*
-    * 获取用户角色信息
-    *@param userId
-    *@return
-    * */
+     * 获取用户角色信息
+     *@param userId
+     *@return
+     * */
     public List<GrantedAuthority> getUserAuthority(Long userId) {
-        return null;
+
+        // 角色(ROLE_admin)、菜单操作权限(sys:user:list)
+        String authority = sysUserService.getUserAuthorityInfo(userId); //ROLE_admin,ROLE_normal,sys:user:list
+
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);
     }
 }
