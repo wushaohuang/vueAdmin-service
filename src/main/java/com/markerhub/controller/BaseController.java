@@ -1,5 +1,7 @@
 package com.markerhub.controller;
 
+
+import com.markerhub.service.*;
 import com.markerhub.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,4 +13,16 @@ public class BaseController {
 
     @Autowired
     RedisUtil redisUtil;
+
+    @Autowired
+    SysUserService sysUserService;
+
+    @Autowired
+    SysMenuService sysMenuService;
+
+    @Autowired
+    SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    SysRoleMenuService sysRoleMenuService;
 }

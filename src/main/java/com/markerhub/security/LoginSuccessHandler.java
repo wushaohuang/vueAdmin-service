@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public abstract class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     JwtUtils jwtUtils;
@@ -38,4 +38,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         outputStream.flush();
         outputStream.close();
     }
+
+    public abstract void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException;
 }

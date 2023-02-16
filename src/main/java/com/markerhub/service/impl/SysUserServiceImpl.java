@@ -9,6 +9,7 @@ import com.markerhub.service.SysMenuService;
 import com.markerhub.service.SysRoleService;
 import com.markerhub.service.SysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.markerhub.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     SysMenuService sysMenuService;
+
+    @Autowired
+    RedisUtil redisUtil;
+
 
     @Override
     public SysUser getByUsername(String username) {
@@ -69,16 +74,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void clearUserAuthorityInfo(String username) {
-
+        redisUtil.del("GrantedAuthority:" + username);
     }
 
     @Override
     public void clearUserAuthorityInfoByRoleId(Long roleId) {
-
+        List<SysUser> sysUsers = this.list(new QueryWrapper<SysUser>()
+                .inSql("id","select user_id from sys_user_role where role_id = " + roleId)
+        );
+        sysUsers.forEach(u -> {
+            this.clearUserAuthorityInfo(u.getUsername());
+        });
     }
 
     @Override
     public void clearUserAuthorityInfoByMenuId(Long menuId) {
-
+        List<SysUser> sysUsers = sysUserMapper.listByMenuId(menuId);
+        sysUsers.forEach(u -> {
+            this.clearUserAuthorityInfo(u.getUsername());
+        });
     }
 }
