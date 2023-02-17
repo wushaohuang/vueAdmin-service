@@ -91,4 +91,23 @@ public class SysMenuController extends BaseController {
 		return Result.succ(sysMenu);
 	}
 
+	@PostMapping("/delete/{id}")
+	@PreAuthorize("hasAuthority('sys:menu:delete')")
+	public Result delete(@PathVariable("id") Long id) {
+
+		//本质上是看他是否有子菜单
+		int count = sysMenuService.count(new QueryWrapper<SysMenu>().eq("parent_id", id));
+		if (count > 0) {
+			return Result.fail("请先删除子菜单");
+		}
+
+		// 清除所有与该菜单相关的权限缓存
+		sysUserService.clearUserAuthorityInfoByMenuId(id);
+
+		sysMenuService.removeById(id);
+
+		// 同步删除中间关联表
+		sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("menu_id", id));
+		return Result.succ("");
+	}
 }

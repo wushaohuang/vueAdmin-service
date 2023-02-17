@@ -49,6 +49,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		return convert(menuTree);
 	}
 
+	// 菜单接口返回树状结构
 	@Override
 	public List<SysMenu> tree() {
 		// 获取所有菜单信息
