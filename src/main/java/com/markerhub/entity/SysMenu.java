@@ -3,22 +3,19 @@ package com.markerhub.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
-
 /**
  * <p>
- *
+ * 
  * </p>
  *
  * @author 我的公众号：MarkerHub
- * @since 2023-01-31
+ * @since 2021-04-05
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,7 +26,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 父菜单ID，一级菜单为0
      */
-    @NotBlank(message = "上级菜单不能为空")
+    @NotNull(message = "上级菜单不能为空")
     private Long parentId;
 
     @NotBlank(message = "菜单名称不能为空")
@@ -49,7 +46,7 @@ public class SysMenu extends BaseEntity {
     private String component;
 
     /**
-     * 类型 -> 0：目录; 1：菜单; 2：按钮
+     * 类型     0：目录   1：菜单   2：按钮
      */
     @NotNull(message = "菜单类型不能为空")
     private Integer type;
